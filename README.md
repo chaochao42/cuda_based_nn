@@ -15,7 +15,7 @@
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/Phoenix8215/BuildCudaNeuralNetworkFromScratch
+   git clone git@github.com:chaochao42/cuda_based_nn.git
    cd BuildCudaNeuralNetworkFromScratch
    ```
 
