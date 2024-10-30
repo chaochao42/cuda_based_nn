@@ -7,7 +7,7 @@ __device__ float sigmoid(float x) {
 }
 
 
-__global__ void sigmoidActivationForward(float* Z, float* A, int Z_x_dim, int Z_y_dim) {
+__global__ void LeakyReluActivationForward(float* Z, float* A, int Z_x_dim, int Z_y_dim) {
 
 	int index = blockIdx.x * blockDim.x + threadIdx.x;
 
@@ -15,7 +15,7 @@ __global__ void sigmoidActivationForward(float* Z, float* A, int Z_x_dim, int Z_
 }
 
 
-__global__ void sigmoidActivationBackward(float* Z, float* dA, float* dZ, int Z_x_dim, int Z_y_dim) {
+__global__ void LeakyReluActivationBackward(float* Z, float* dA, float* dZ, int Z_x_dim, int Z_y_dim) {
 
 	int index = blockIdx.x * blockDim.x + threadIdx.x;
 
@@ -36,9 +36,9 @@ Matrix& LeakyReluActivation::forward(Matrix& Z) {
 	dim3 block_size(256);
 	dim3 num_of_blocks((Z.shape.y * Z.shape.x + block_size.x - 1) / block_size.x);
 
-	sigmoidActivationForward<<<num_of_blocks, block_size>>>(Z.data_device.get(), A.data_device.get(),
+	LeakyReluActivationForward<<<num_of_blocks, block_size>>>(Z.data_device.get(), A.data_device.get(),
 														   	Z.shape.x, Z.shape.y);
-	NNException::throwIfDeviceErrorsOccurred("Cannot perform sigmoid forward propagation.");
+	NNException::throwIfDeviceErrorsOccurred("Cannot perform reaky_relu forward propagation.");
 
 	return A;
 }
@@ -48,10 +48,10 @@ Matrix& LeakyReluActivation::backward(Matrix& dA, float learning_rate) {
 
 	dim3 block_size(256);
 	dim3 num_of_blocks((Z.shape.y * Z.shape.x + block_size.x - 1) / block_size.x);
-	sigmoidActivationBackward<<<num_of_blocks, block_size>>>(Z.data_device.get(), dA.data_device.get(),
+	LeakyReluActivationBackward<<<num_of_blocks, block_size>>>(Z.data_device.get(), dA.data_device.get(),
 															 dZ.data_device.get(),
 															 Z.shape.x, Z.shape.y);
-	NNException::throwIfDeviceErrorsOccurred("Cannot perform sigmoid back propagation");
+	NNException::throwIfDeviceErrorsOccurred("Cannot perform reaky_relu back propagation");
 
 	return dZ;
 }
