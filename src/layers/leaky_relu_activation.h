@@ -8,9 +8,9 @@ private:
 
 	Matrix Z; // 输入
 	Matrix dZ;
-
+	float alpha;
 public:
-	LeakyReluActivation(std::string name);
+	LeakyReluActivation(std::string name, float alpha = 0.01);
 	~LeakyReluActivation();
 
 	Matrix& forward(Matrix& Z);

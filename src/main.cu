@@ -6,6 +6,7 @@
 #include "layers/relu_activation.h"
 #include "layers/sigmoid_activation.h"
 #include "layers/softmax_activation.h"
+#include "layers/leaky_relu_activation.h"
 #include "nn_utils/nn_exception.h"
 #include "cost_functions/bce_cost.h"
 #include "datasets/mnist_dataset.h"
@@ -27,7 +28,7 @@ int main() {
 
 	NeuralNetwork nn;
 	nn.addLayer(new LinearLayer("linear_1", Shape(784, 128)));
-	nn.addLayer(new ReLUActivation("relu_1"));
+	nn.addLayer(new LeakyReluActivation("leaky_relu_1", 0.2));
 	nn.addLayer(new LinearLayer("linear_2", Shape(128, 10)));
 	// nn.addLayer(new SoftmaxActivation("softmax"));
 	nn.addLayer(new SigmoidActivation("sigmoid"));
